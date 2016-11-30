@@ -1,0 +1,35 @@
+<form name="form" novalidate ng-class="{loading: loading, submitted: submitted}">
+  <div class="jumbotron">
+    <div class="form-group">
+      <label for="logins" class="field-label">Github logins</label>
+      <textarea name="logins" id="logins" class="form-control" rows="8" cols="10" placeholder="For example: GrahamCampbell" ng-model="logins" autofocus required></textarea>
+    </div>
+
+    <div class="alert alert-danger slide-down" ng-show="form.$submitted && form.$invalid" role="alert">Please, type logins</div>
+
+    <div class="actions">
+      <div class="button-outer">
+        <button type="submit" class="btn btn-lg btn-primary" ng-click="search()">Search</button>
+      </div>
+      <div class="spinner-outer">
+        <span class="glyphicon glyphicon-refresh spinner" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+
+  <table ng-if="users.length" class="table table-striped users-list">
+    <tr ng-repeat="user in users | orderBy: '-followers' track by user.id">
+      <td><img ng-if="user.avatar_url" ng-src="{{user.avatar_url}}" alt="{{user.name}}" class="avatar" /></td>
+      <td>
+        <h3><a ng-href="{{user.html_url}}">{{user.name}} ({{user.login}})</a></h3>
+        <div>Followers: <b>{{user.followers}}</b>, Repos: {{user.public_repos}}</div>
+        <div ng-if="user.company">Company: {{user.company}}</div>
+        <div ng-if="user.location">Location: {{user.location}}</div>
+        <div ng-if="user.blog">Blog: <a ng-href="{{user.blog}}">{{user.blog}}</a></div>
+        <div ng-if="user.email">Email: <a href="mailto:{{user.email}}">{{user.email}}</a></div>
+        Created: {{user.created_at | date:'dd.MM.yyyy'}}
+      </td>
+    </tr>
+  </table>
+  <div ng-hide="users.length" class="alert alert-warning nothing-found" role="alert">Nothing found</div>
+</form>
